@@ -39,7 +39,11 @@ const MealsStackNavigator = () => {
           options={CategoryMealsScreen.navigationOptions}
           component={CategoryMealsScreen}
         />
-        <Stack.Screen name="MealDetail" component={MealDetailScreen} />
+        <Stack.Screen
+          name="MealDetail"
+          component={MealDetailScreen}
+          options={MealDetailScreen.navigationOptions}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
