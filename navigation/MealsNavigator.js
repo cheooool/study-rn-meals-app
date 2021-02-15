@@ -53,6 +53,33 @@ const MealsStackNavigator = () => {
   );
 };
 
+const FavoriteStackNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: Platform.OS === 'android' ? Colors.accentColor : '',
+        },
+        headerTintColor:
+          Platform.OS === 'android' ? 'white' : Colors.primaryColor,
+      }}
+    >
+      <Stack.Screen
+        name="Favorites"
+        component={FavoriteScreen}
+        options={{
+          title: 'Your Favorites',
+        }}
+      />
+      <Stack.Screen
+        name="MealDetail"
+        component={MealDetailScreen}
+        options={MealDetailScreen.navigationOptions}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const tabOptionsConfig =
   Platform.OS === 'android'
     ? {
@@ -81,7 +108,7 @@ const MealTabNavigator = () => {
       />
       <Tab.Screen
         name="Favorites"
-        component={FavoriteScreen}
+        component={FavoriteStackNavigator}
         options={{
           tabBarIcon: (tabInfo) => {
             return <Ionicons name="ios-star" size={25} color={tabInfo.color} />;
