@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { CATEGORIES, MEALS } from '../data/dummy-data';
 import MealList from '../components/MealList';
@@ -7,7 +8,9 @@ const CaegoryMealsScreen = (props) => {
   // 넘겨받은 파라메터를 가져올 수 있다.
   const catId = props.route.params.categoryId;
 
-  const displayedMeals = MEALS.filter(
+  const availableMeals = useSelector((state) => state.meals.filteredMeals);
+
+  const displayedMeals = availableMeals.filter(
     (meal) => meal.categoryIds.indexOf(catId) !== -1
   );
   // 해당 페이지의 타이틀을 동적으로 변경하는 방법이다.

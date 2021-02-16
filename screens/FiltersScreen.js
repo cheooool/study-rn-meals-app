@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, Switch, Platform } from 'react-native';
 
 import Colors from '../constants/colors';

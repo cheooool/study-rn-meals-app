@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { ScrollView, Image, View, Text, StyleSheet } from 'react-native';
-
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { MEALS } from '../data/dummy-data';
 import HeaderButton from '../components/HeaderButton';
 import DefaultText from '../components/DefaultText';
+
+import { toggleFavorite } from '../store/actions/meals';
 
 const ListItem = (props) => {
   return (
@@ -16,8 +18,26 @@ const ListItem = (props) => {
 };
 
 const MealDetailScreen = (props) => {
+  const availableMeals = useSelector((state) => state.meals.meals);
   const mealId = props.route.params.mealId;
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const currentMealIsFavorite = useSelector((state) =>
+    state.meals.favoriteMeals.some((meal) => meal.id === mealId)
+  );
+  const selectedMeal = availableMeals.find((meal) => meal.id === mealId);
+
+  const dispatch = useDispatch();
+
+  const toggleFavoriteHandler = useCallback(() => {
+    dispatch(toggleFavorite(mealId));
+  }, [dispatch, mealId]);
+
+  useEffect(() => {
+    props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
+  }, [toggleFavoriteHandler]);
+
+  useEffect(() => {
+    props.navigation.setParams({ isFav: currentMealIsFavorite });
+  }, [currentMealIsFavorite]);
   return (
     <ScrollView>
       <Image source={{ uri: selectedMeal.imageUrl }} style={styles.image} />
@@ -40,18 +60,18 @@ const MealDetailScreen = (props) => {
 
 MealDetailScreen.navigationOptions = (props) => {
   // 넘겨받은 파라메터를 가져올 수 있다.
-  const mealId = props.route.params.mealId;
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const mealTitle = props.route.params.mealTitle;
+  const toggleFavorite = props.route.params.toggleFav;
+  const isFavorite = props.route.params.isFav;
+
   return {
-    headerTitle: selectedMeal.title,
+    headerTitle: mealTitle,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Favorite"
-          iconName="ios-star"
-          onPress={() => {
-            console.log('Mark as favorite!');
-          }}
+          iconName={isFavorite ? 'ios-star' : 'ios-star-outline'}
+          onPress={toggleFavorite}
         />
       </HeaderButtons>
     ),
