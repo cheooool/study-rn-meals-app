@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 
 // import { NavigationContainer } from '@react-navigation/native';
 
@@ -29,17 +29,21 @@ const Tab =
 
 const Drawer = createDrawerNavigator();
 
+const defaultNavOptions = {
+  headerStyle: {
+    backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : '',
+  },
+  headerTitleStyle: {
+    fontFamily: 'open-sans-bold',
+  },
+  headerBackTitleStyle: {
+    fontFamily: 'open-sans',
+  },
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor,
+};
 const MealsStackNavigator = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : '',
-        },
-        headerTintColor:
-          Platform.OS === 'android' ? 'white' : Colors.primaryColor,
-      }}
-    >
+    <Stack.Navigator screenOptions={{ ...defaultNavOptions }}>
       <Stack.Screen
         name="Categories"
         options={({ navigation }) => ({
@@ -78,11 +82,10 @@ const FavoriteStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        ...defaultNavOptions,
         headerStyle: {
           backgroundColor: Platform.OS === 'android' ? Colors.accentColor : '',
         },
-        headerTintColor:
-          Platform.OS === 'android' ? 'white' : Colors.primaryColor,
       }}
     >
       <Stack.Screen
@@ -118,11 +121,7 @@ const FiltersStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: {
-          backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : '',
-        },
-        headerTintColor:
-          Platform.OS === 'android' ? 'white' : Colors.primaryColor,
+        ...defaultNavOptions,
       }}
     >
       <Stack.Screen
@@ -157,6 +156,9 @@ const tabOptionsConfig =
       }
     : {
         tabBarOptions: {
+          labelStyle: {
+            fontFamily: 'open-sans-bold',
+          },
           activeTintColor: Colors.accentColor,
         },
       };
@@ -173,6 +175,12 @@ const MealsFavTabNavigator = () => {
             );
           },
           tabBarColor: Colors.primaryColor,
+          tabBarLabel:
+            Platform.OS === 'android' ? (
+              <Text style={{ fontFamily: 'open-sans-bold' }}>Meals</Text>
+            ) : (
+              'Meals'
+            ),
         }}
       />
       <Tab.Screen
@@ -183,6 +191,12 @@ const MealsFavTabNavigator = () => {
             return <Ionicons name="ios-star" size={25} color={tabInfo.color} />;
           },
           tabBarColor: Colors.accentColor,
+          tabBarLabel:
+            Platform.OS === 'android' ? (
+              <Text style={{ fontFamily: 'open-sans-bold' }}>Favorites</Text>
+            ) : (
+              'Favorites'
+            ),
         }}
       />
     </Tab.Navigator>
